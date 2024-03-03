@@ -1,0 +1,7 @@
+ea4bc82a6ad023ab7ee23ee620429895
+::res://::1709482257
+icon.svg::CompressedTexture2D::4338496441606352860::1709480625::1709480627::1::::<><>::
+world.tscn::PackedScene::6120272913759772187::1709481782::0::1::::<><>::uid://fw6hqod5os2x::::res://MapCameraController/map_camera_controller.tscn
+::res://MapCameraController/::1709481782
+map_camera_controller.gd::GDScript::-1::1709481782::0::1::::<>Node3D<>::
+map_camera_controller.tscn::PackedScene::398256118290404133::1709481758::0::1::::<><>::res://MapCameraController/map_camera_controller.gd

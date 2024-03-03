@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://fw6hqod5os2x"]
+
+[ext_resource type="Script" path="res://MapCameraController/map_camera_controller.gd" id="1_akgpd"]
+
+[node name="MapCameraController" type="Node3D"]
+script = ExtResource("1_akgpd")
+
+[node name="Elevator" type="Node3D" parent="."]
+
+[node name="Lens" type="Camera3D" parent="Elevator"]

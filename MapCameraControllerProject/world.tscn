@@ -1,0 +1,50 @@
+[gd_scene load_steps=4 format=3 uid="uid://ctgyaa21g4crj"]
+
+[ext_resource type="PackedScene" uid="uid://fw6hqod5os2x" path="res://MapCameraController/map_camera_controller.tscn" id="1_les0u"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_rqbup"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ev2wf"]
+
+[node name="world" type="Node3D"]
+
+[node name="env" type="Node3D" parent="."]
+
+[node name="sun" type="DirectionalLight3D" parent="env"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 20.9342, 0)
+
+[node name="plane" type="MeshInstance3D" parent="env"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+mesh = SubResource("PlaneMesh_rqbup")
+skeleton = NodePath("../..")
+
+[node name="box1" type="MeshInstance3D" parent="env"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.714327, 0, -2.73565)
+mesh = SubResource("BoxMesh_ev2wf")
+skeleton = NodePath("../..")
+
+[node name="box2" type="MeshInstance3D" parent="env"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.58054, 0, -0.686917)
+mesh = SubResource("BoxMesh_ev2wf")
+skeleton = NodePath("../..")
+
+[node name="box3" type="MeshInstance3D" parent="env"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.34229, 0, 2.75412)
+mesh = SubResource("BoxMesh_ev2wf")
+skeleton = NodePath("../..")
+
+[node name="box4" type="MeshInstance3D" parent="env"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.41227, 0, 0)
+mesh = SubResource("BoxMesh_ev2wf")
+skeleton = NodePath("../..")
+
+[node name="MapCameraController" parent="." instance=ExtResource("1_les0u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.13257, 5.00445)
+input_forward = &"camera_forward"
+input_backward = &"camera_backward"
+input_left = &"camera_left"
+input_right = &"camera_right"
+input_zoom_in = &"camera_zoom_in"
+input_zoom_out = &"camera_zoom_out"
+input_rotate = &"camera_rotate"
+input_pan = &"camera_pan"
