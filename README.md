@@ -5,7 +5,8 @@ Camera controller for RTS, TBS. Created using Godot version 4.2
 * MOVE - moving the camera in two asix (horizontal plane) parallel to the map, usually by WASD in keyboard
 * PAN - moving the camera in two asix (horizontal plane) parallel to the map by mouse
 * ZOOM - camera zoom in one asix, usually by mouse scroll wheel
-* RORATE - rotate camera in two asix by mouse move, usually by middle mouse button
+* ROTATE - rotate camera in two asix by mouse move, usually by middle mouse button
+* signal "map_camera_controller_mouse_position_signal" - to get ray from camera to terrain
 
 ## Usage
 * From repository downoad folder /MapCameraControllerProject/MapCameraController

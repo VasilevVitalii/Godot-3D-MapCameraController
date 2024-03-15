@@ -1,2 +1,4 @@
 res://MapCameraController/map_camera_controller.tscn
 res://MapCameraController/map_camera_controller.gd
+res://world.tscn
+res://world.gd

@@ -1,5 +1,7 @@
 extends Node3D
 
+signal map_camera_controller_mouse_position_signal(ray_from: Vector3, ray_to: Vector3)
+
 @export_group("move")
 ## moving the camera in two asix (horizontal plane) parallel to the map, usually by WASD in keyboard
 @export var allow_move: bool = true
@@ -54,6 +56,12 @@ extends Node3D
 ## speed pan
 @export_range (0, 10, 0.5) var speed_pan: float = 2
 
+@export_group("mouse position on terrain")
+## send signal "map_camera_controller_mouse_position_changed" with ray from camera to mouse cursor
+@export var allow_ray_to_terrain: bool = false
+## ray length
+@export var length_ray_to_terrain: int = 1000
+
 const RAY_LENGTH = 1000
 const GROUND_PLANE = Plane(Vector3.UP, 0)
 
@@ -63,6 +71,8 @@ var zoom_direction = 0
 var can_rotate = false
 var is_in_pan_mode = false
 var last_mouse_position = Vector2()
+var prev_ray_to_terrain = Vector3()
+var prev_ray_from_terrain = Vector3()
 
 func _process(delta: float) -> void:
 	if allow_move && !is_in_pan_mode: _move(delta)
@@ -71,6 +81,16 @@ func _process(delta: float) -> void:
 	if allow_pan && is_in_pan_mode:	_pan(delta)
 
 func _input(event: InputEvent) -> void:
+	
+	if allow_ray_to_terrain && event is InputEventMouseMotion:
+		var mouse_position = (event as InputEventMouseMotion).position
+		var ray_from = lens.project_ray_origin(mouse_position)
+		var ray_to = ray_from + lens.project_ray_normal(mouse_position) * length_ray_to_terrain
+		if ray_from != null && ray_to != null && (ray_from != prev_ray_from_terrain || ray_to != prev_ray_to_terrain):
+			prev_ray_from_terrain = ray_from
+			prev_ray_to_terrain = ray_to
+			map_camera_controller_mouse_position_signal.emit(ray_from,ray_to)
+	
 	if !input_zoom_in.is_empty() && event.is_action_pressed(input_zoom_in):
 		zoom_direction = -1
 	if !input_zoom_out.is_empty() && event.is_action_pressed(input_zoom_out):
