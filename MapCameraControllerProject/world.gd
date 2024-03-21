@@ -1,15 +1,6 @@
 extends Node3D
 
-@onready var plane = $env/StaticBody3D
 @onready var pointer = $env/pointer
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
 
 func _on_map_camera_controller_map_camera_controller_mouse_position_signal(ray_from: Vector3, ray_to: Vector3):
 	var space_state = get_world_3d().direct_space_state
