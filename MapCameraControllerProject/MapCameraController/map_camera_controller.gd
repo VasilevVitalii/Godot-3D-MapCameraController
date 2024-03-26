@@ -54,7 +54,7 @@ signal map_camera_controller_mouse_position_signal(ray_from: Vector3, ray_to: Ve
 ## inverted asix y between mouse move over map 
 @export var inverted_y_pan: bool = false
 ## speed pan
-@export_range (0, 10, 0.5) var speed_pan: float = 2
+@export_range (0, 100, 1) var speed_pan: int = 2
 
 @export_group("mouse position on terrain")
 ## send signal "map_camera_controller_mouse_position_changed" with ray from camera to mouse cursor
