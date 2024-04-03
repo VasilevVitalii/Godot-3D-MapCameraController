@@ -26,11 +26,11 @@ signal map_camera_controller_mouse_position_signal(ray_from: Vector3, ray_to: Ve
 ## if true, lens zoom to mouse cursor, else - to center screen
 @export var to_cursor_zoom: bool = true
 ## minimum distance to map
-@export_range (0, 100, 0.5) var min_zoom: float = 3
+@export_range (0, 1000, 0.5) var min_zoom: float = 3
 ## maximum distance from map
-@export_range (0, 100, 0.5) var max_zoom: float = 20
+@export_range (0, 1000, 0.5) var max_zoom: float = 20
 ## speed zoom
-@export_range (0, 100, 0.5) var speed_zoom: float = 20
+@export_range (0, 1000, 0.5) var speed_zoom: float = 20
 ## inertia 
 @export_range (0, 1, 0.05) var fade_zoom: float = 0.8
 
@@ -65,14 +65,19 @@ signal map_camera_controller_mouse_position_signal(ray_from: Vector3, ray_to: Ve
 const RAY_LENGTH = 1000
 const GROUND_PLANE = Plane(Vector3.UP, 0)
 
+@onready var controller = $"."
 @onready var lens = $Elevator/Lens
 @onready var elevator = $Elevator
+
 var zoom_direction = 0
 var can_rotate = false
 var is_in_pan_mode = false
 var last_mouse_position = Vector2()
 var prev_ray_to_terrain = Vector3()
 var prev_ray_from_terrain = Vector3()
+
+func set_rotate(x: int):
+	elevator.rotation_degrees.x = -1 * abs(x)
 
 func _process(delta: float) -> void:
 	if allow_move && !is_in_pan_mode: _move(delta)
@@ -81,7 +86,6 @@ func _process(delta: float) -> void:
 	if allow_pan && is_in_pan_mode:	_pan(delta)
 
 func _input(event: InputEvent) -> void:
-	
 	if allow_ray_to_terrain && event is InputEventMouseMotion:
 		var mouse_position = (event as InputEventMouseMotion).position
 		var ray_from = lens.project_ray_origin(mouse_position)
@@ -131,12 +135,19 @@ func _rotate(delta: float) -> void:
 		-angle_rotate_min
 	)
 
-
 func _zoom(delta: float) -> void:
-	var new_zoom = lens.global_position.z + (zoom_direction * speed_zoom * delta)
-	if (zoom_direction < 0 && min_zoom > new_zoom) || (zoom_direction > 0 && new_zoom > max_zoom): return
+	var rotate_angle_rad = deg_to_rad(abs(elevator.rotation_degrees.x))
+	var base_zoom = zoom_direction * speed_zoom * delta
+	var new_global_position_y = controller.global_position.y + (base_zoom * sin(rotate_angle_rad))
+
+	if (zoom_direction < 0 && min_zoom > new_global_position_y): return
+	if (zoom_direction > 0 && new_global_position_y > max_zoom): return
+
+	var new_global_position_z = controller.global_position.z + (base_zoom * cos(rotate_angle_rad))
+
+	controller.global_position.y = new_global_position_y
+	controller.global_position.z = new_global_position_z
 	
-	lens.position.z += zoom_direction * speed_zoom * delta
 	zoom_direction *= fade_zoom
 	if abs(zoom_direction) < 0.0001: zoom_direction = 0
 	
@@ -156,20 +167,15 @@ func _pan(delta: float) -> void:
 ##############################
 
 func _get_mouse_speed() -> Vector2:
-	# calculate speed
 	var current_mouse_pos = get_viewport().get_mouse_position()
 	var mouse_speed = current_mouse_pos - last_mouse_position
-	# update last click position
 	last_mouse_position = current_mouse_pos
-	# return speed
 	return mouse_speed
-
 
 func _realign_lens(point: Vector3) -> void:
 	var new_position = _get_ground_position()
 	if new_position == null: return
 	position += point - new_position
-
 
 func _get_ground_position():
 	var mouse_pos = get_viewport().get_mouse_position()

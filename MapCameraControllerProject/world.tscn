@@ -60,7 +60,7 @@ skeleton = NodePath("../..")
 mesh = SubResource("SphereMesh_3dnyf")
 
 [node name="MapCameraController" parent="." instance=ExtResource("1_les0u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.13257, 5.00445)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.84496, 6.16734)
 input_forward = &"camera_forward"
 input_backward = &"camera_backward"
 input_left = &"camera_left"
