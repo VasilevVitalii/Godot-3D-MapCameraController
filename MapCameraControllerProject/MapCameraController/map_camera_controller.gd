@@ -28,7 +28,7 @@ signal map_camera_controller_mouse_position_signal(ray_from: Vector3, ray_to: Ve
 ## minimum distance to map
 @export_range (0, 1000, 0.5) var min_zoom: float = 3
 ## maximum distance from map
-@export_range (0, 1000, 0.5) var max_zoom: float = 20
+@export_range (0, 10000, 0.5) var max_zoom: float = 20
 ## speed zoom
 @export_range (0, 1000, 0.5) var speed_zoom: float = 20
 ## inertia 
