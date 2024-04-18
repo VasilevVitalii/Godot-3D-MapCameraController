@@ -136,17 +136,17 @@ func _rotate(delta: float) -> void:
 	)
 
 func _zoom(delta: float) -> void:
-	var rotate_angle_rad = deg_to_rad(abs(elevator.rotation_degrees.x))
 	var base_zoom = zoom_direction * speed_zoom * delta
-	var new_global_position_y = controller.global_position.y + (base_zoom * sin(rotate_angle_rad))
+	var new_global_position_y = controller.global_position.y + (base_zoom * sin(abs(elevator.rotation.x)))
 
 	if (zoom_direction < 0 && min_zoom > new_global_position_y): return
 	if (zoom_direction > 0 && new_global_position_y > max_zoom): return
-
-	var new_global_position_z = controller.global_position.z + (base_zoom * cos(rotate_angle_rad))
-
+	
+	var rotation_y = controller.rotation.y
+	
 	controller.global_position.y = new_global_position_y
-	controller.global_position.z = new_global_position_z
+	controller.global_position.z += base_zoom * cos(abs(rotation_y))
+	controller.global_position.x += base_zoom * sin(rotation_y)
 	
 	zoom_direction *= fade_zoom
 	if abs(zoom_direction) < 0.0001: zoom_direction = 0
